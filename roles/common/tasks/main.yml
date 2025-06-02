@@ -1,0 +1,26 @@
+- name: Replace TN mirror with default global mirror
+  ansible.builtin.replace:
+    path: /etc/apt/sources.list
+    regexp: 'http://tn.archive.ubuntu.com/ubuntu'
+    replace: 'http://archive.ubuntu.com/ubuntu'
+
+- name: Update apt cache after replacing mirror
+  ansible.builtin.apt:
+    update_cache: yes
+  tags:
+    - update
+
+- name: Ensure unzip is installed
+  ansible.builtin.apt:
+    name: unzip
+    state: present
+  retries: 5
+  delay: 10
+  register: result
+  until: result is success
+
+- name: Print Hello from Ansible
+  ansible.builtin.debug:
+    msg: "Hello from Ansible!"
+  tags:
+    - hello

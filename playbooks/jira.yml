@@ -1,0 +1,7 @@
+- name: Install Jira
+  hosts: socjira
+  become: yes
+  vars_files:
+    - ../group_vars/all.yml
+  roles:
+    - jira

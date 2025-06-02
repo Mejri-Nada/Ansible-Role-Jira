@@ -1,0 +1,6 @@
+# Jira installer response file for silent install
+launch.application$Boolean=false
+rmiPort=8005
+app.install.service$Boolean=true
+existingInstallationDir=/opt/atlassian/jira
+sys.installationDir=/opt/atlassian/jira

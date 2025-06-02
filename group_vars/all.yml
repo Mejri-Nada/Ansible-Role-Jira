@@ -1,0 +1,16 @@
+ansible_python_interpreter: /usr/bin/python3
+# group_vars/all.yml
+
+jira_user_group: jira
+jira_user: jira
+jira_user_home_dir: "/opt"
+jira_home: "/var/jira"
+jira_download_link: "https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-9.12.23-x64.bin"
+jira_filename: "atlassian-jira-software-9.12.23-x64.bin"
+jira_version: "9.12.23"
+jira_extracted: "/opt/atlassian/jira"
+jira_user_home_dir: "/opt/atlassian"
+#jira_version_file_sha256sum: "0a57714dc5cf8d136a5ecf9156c6875f5547ce6c2b7aac9acc94695ea2d4b529"
+
+# Use embedded database for now
+set_db: false

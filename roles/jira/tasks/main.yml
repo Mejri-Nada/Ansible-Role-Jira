@@ -1,0 +1,80 @@
+- name: Placeholder for Jira installation tasks
+  ansible.builtin.debug:
+    msg: "Installing Jira..."
+
+- name: Debug jira_user_group
+  debug:
+    msg: "jira_user_group is {{ jira_user_group }}"
+
+# roles/jira/tasks/main.yml
+
+- name: Ensure Jira group exists
+  group:
+    name: "{{ jira_user_group }}"
+    state: present
+
+- name: Ensure Jira user exists
+  user:
+    name: "{{ jira_user }}"
+    group: "{{ jira_user_group }}"
+    home: "{{ jira_user_home_dir }}"
+    create_home: yes
+    shell: /bin/bash
+
+- name: Create Jira home directory
+  file:
+    path: "{{ jira_home }}"
+    state: directory
+    owner: "{{ jira_user }}"
+    group: "{{ jira_user_group }}"
+
+- name: Download Jira archive
+  get_url:
+    url: "{{ jira_download_link }}"
+    dest: "/tmp/{{ jira_filename }}"
+#    checksum: "sha256:{{ jira_version_file_sha256sum }
+- name: Make Jira installer executable
+  file:
+    path: "/tmp/{{ jira_filename }}"
+    mode: '0755'
+
+- name: Copy Jira response file
+  copy:
+    src: jira-response.varfile
+    dest: /tmp/jira-response.varfile
+    mode: '0644'
+
+- name: Ensure fontconfig is installed (required for Jira with OpenJDK)
+  apt:
+    name: fontconfig
+    state: present
+    update_cache: yes
+
+- name: Run Jira installer silently with timeout and log output
+  ansible.builtin.shell: |
+    timeout 300 /tmp/{{ jira_filename }} -q -varfile /tmp/jira-response.varfile > /tmp/jira_install.out 2>&1
+    EXIT_CODE=$?
+    echo "Jira installer exited with code $EXIT_CODE" >> /tmp/jira_install.out
+    exit $EXIT_CODE
+  args:
+    executable: /bin/bash
+  register: jira_install_result
+  ignore_errors: true
+
+- name: Show last 50 lines of Jira installer log
+  ansible.builtin.shell: tail -n 50 /tmp/jira_install.out
+  register: jira_log_tail
+  changed_when: false
+
+- name: Display Jira installer output
+  debug:
+    msg: "{{ jira_log_tail.stdout_lines }}"
+
+#- name: Ensure Jira install dir is owned by correct user
+#  file:
+#    path: "{{ jira_user_home_dir }}"
+#    state: directory
+#    recurse: yes
+#    owner: "{{ jira_user }}"
+#    group: "{{ jira_user_group }}"
+
