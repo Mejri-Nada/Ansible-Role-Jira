@@ -1,1 +1,27 @@
+# Ansible
+*.retry
+*.log
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Python (if any scripts)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.env
+
+# SSH keys and credentials
+*.pem
+*.key
+*.crt
+vault.yml
 
