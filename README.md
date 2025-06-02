@@ -1,4 +1,4 @@
-# SOCjira Ansible Project
+# Jira Installer Role with Ansible Project
 
 ## Usage
 
