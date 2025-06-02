@@ -49,3 +49,14 @@ jira_version: "9.12.23"
 jira_download_link: "https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-9.12.23-x64.bin"
 jira_user_home_dir: "/opt/atlassian"
 ```
+
+---
+
+### ✅ 3. **LICENSE**
+
+```text
+MIT License
+
+Copyright (c) 2025 Nada Mejri
+
+Author contact: mejrinada8@gmail.com
